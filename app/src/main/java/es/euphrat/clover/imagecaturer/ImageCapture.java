@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -64,12 +66,13 @@ public class ImageCapture extends AsyncTask<String, Void, String> {
 
     private String saveImage(Bitmap bitmap, String myDir) {
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c.getTime());
 
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
 
-        fileName = "Image-" + n + ".jpg";
+
+        fileName = "Image-" + formattedDate + ".jpg";
         File file = new File(myDir, fileName);
         if (file.exists()) file.delete();
 
