@@ -28,8 +28,7 @@ public class MainActivity extends Activity {
         Util.alarmManager(this);
 
 
-        // man ovaisam
-
+            //TEST
     }
 
 
