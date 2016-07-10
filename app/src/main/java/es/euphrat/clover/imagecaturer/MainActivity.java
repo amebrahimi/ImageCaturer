@@ -59,46 +59,48 @@ public class MainActivity extends Activity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = (Button)findViewById(R.id.button1);
         imageview = (ImageView)findViewById(R.id.imageView1);
-        button.setOnClickListener(new View.OnClickListener() {
+        GetImageURL getImageadres = new GetImageURL();
+        try {
+            imageAddress = getImageadres.execute("http://apod.nasa.gov/apod/astropix.html").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.e(MainActivity.TAG, "we got an error in MainActivity: ", e);
+        } catch (Exception e) {
+            Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
+        }
+        if (!imageAddress.isEmpty() && imageAddress != null) {
 
-            @Override
-            public void onClick(View v) {
+            ImageDownloadWithProgressDialog imageCapture = new ImageDownloadWithProgressDialog();
+
+            Log.d(MainActivity.TAG, imageAddress);
+
+            imageCapture.execute("http://apod.nasa.gov/apod/" + imageAddress);
+
+
+        } else {
+
+            Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
+            Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+        }
+//        button.setOnClickListener(new View.OnClickListener() {
+
+//            @Override
+//            public void onClick(View v) {
                 // TODO Auto-generated method stub
-                GetImageURL getImageadres = new GetImageURL();
-                try {
-                    imageAddress = getImageadres.execute("http://apod.nasa.gov/apod/astropix.html").get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    Log.e(MainActivity.TAG, "we got an error in MainActivity: ", e);
-                } catch (Exception e) {
-                    Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
-                }
-                if (!imageAddress.isEmpty() && imageAddress != null) {
 
-                    ImageDownloadWithProgressDialog imageCapture = new ImageDownloadWithProgressDialog();
-
-                    Log.d(MainActivity.TAG, imageAddress);
-
-                    imageCapture.execute("http://apod.nasa.gov/apod/" + imageAddress);
-
-
-                } else {
-
-                    Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
-                    Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
-                }
-
+//                imageAddress = "http://www.serone.reiran.com/photos/old/free/reiran.com1358375130.jpg";
                 new ImageDownloadWithProgressDialog().execute(imageAddress);
 
-            }
-        });
+//            }
+//        });
 
         Log.d(TAG, DIRECTORY);
         fileName = "Image-" + formattedDate + ".jpg";
@@ -115,6 +117,8 @@ public class MainActivity extends Activity {
 
     }
     public class ImageDownloadWithProgressDialog extends AsyncTask<String, String, String> {
+
+        Context mContext;
 
         @Override
         protected void onPreExecute() {
@@ -156,8 +160,8 @@ public class MainActivity extends Activity {
                 inputstream.close();
 
             } catch (Exception e) {}
-            return null;
-
+//            return null;
+            return fileName;
         }
         protected void onProgressUpdate(String... progress) {
 
@@ -165,18 +169,23 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(String unused) {
+        protected void onPostExecute(String s) {
+
+            super.onPostExecute(s);
 
             dismissDialog(Progress_Dialog_Progress);
 
-            GetPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2/" + fileName ;
+            GetPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2/" + fileName;
 
             imageview.setImageDrawable(Drawable.createFromPath(GetPath));
 
             Toast.makeText(MainActivity.this, "Image Downloaded Successfully", Toast.LENGTH_LONG).show();
-        }
+
+            Util.setWall(getApplicationContext(), s);
+
     }
 
+}
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {

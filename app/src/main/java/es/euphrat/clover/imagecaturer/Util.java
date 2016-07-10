@@ -40,7 +40,7 @@ public class Util {
 
         random = new Random(5);
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent mIntent = new Intent(context, TriggerDownload.class);
+        Intent mIntent = new Intent(context, MainActivity.ImageDownloadWithProgressDialog.class);
         mPendingIntent = PendingIntent.getBroadcast(context, random.nextInt(), mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Log.i(MainActivity.TAG, random.nextInt() + "");
@@ -76,7 +76,7 @@ public class Util {
 
 
         try {
-            is = new FileInputStream(new File(root + "/Image Capturer/" + fileName));
+            is = new FileInputStream(new File(root + "/Image Capturer2/" + fileName));
 
             Log.d(MainActivity.TAG, fileName);
 
