@@ -93,7 +93,6 @@ public class MainActivity extends Activity {
                     Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
                     Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
                 }
-                new GetImageURL().execute(imageAddress);
 
                 new ImageDownloadWithProgressDialog().execute(imageAddress);
 
