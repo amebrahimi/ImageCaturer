@@ -27,6 +27,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -105,10 +106,10 @@ public class MainActivity extends Activity {
             int permsRequest = 200;
             requestPermissions(perms , permsRequest);
         }
-            // man inaro felan gheire faal kardam //
-//        Util.makeDirectory(DIRECTORY);
-//        Util.alarmManager(this);
-//        Util.makeDirectory(DIRECTORY2);
+//     TODO       // man inaro felan gheire faal kardam //
+        Util.makeDirectory(DIRECTORY);
+        Util.alarmManager(this);
+        Util.makeDirectory(DIRECTORY2);
 
 
 
