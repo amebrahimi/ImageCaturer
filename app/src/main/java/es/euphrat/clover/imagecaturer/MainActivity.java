@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
             int permsRequest = 200;
             requestPermissions(perms , permsRequest);
         }
-
+            // man inaro felan gheire faal kardam //
 //        Util.makeDirectory(DIRECTORY);
 //        Util.alarmManager(this);
 //        Util.makeDirectory(DIRECTORY2);
