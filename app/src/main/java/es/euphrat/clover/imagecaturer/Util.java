@@ -54,7 +54,7 @@ public class Util {
     mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
     AlarmManager.INTERVAL_DAY, mPendingIntent);
 
-//        mAlarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
+        mAlarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
 
     }
 

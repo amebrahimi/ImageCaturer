@@ -1,6 +1,7 @@
 package es.euphrat.clover.imagecaturer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +52,8 @@ public class MainActivity extends Activity {
     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
     String formattedDate = df.format(c.getTime());
     String fileName;
+    Context context;
+
 
 
 
@@ -76,7 +79,21 @@ public class MainActivity extends Activity {
                 } catch (Exception e) {
                     Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
                 }
+                if (!imageAddress.isEmpty() && imageAddress != null) {
 
+                    ImageDownloadWithProgressDialog imageCapture = new ImageDownloadWithProgressDialog();
+
+                    Log.d(MainActivity.TAG, imageAddress);
+
+                    imageCapture.execute("http://apod.nasa.gov/apod/" + imageAddress);
+
+
+                } else {
+
+                    Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
+                    Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+                }
+                new GetImageURL().execute(imageAddress);
 
                 new ImageDownloadWithProgressDialog().execute(imageAddress);
 
@@ -90,9 +107,9 @@ public class MainActivity extends Activity {
             requestPermissions(perms , permsRequest);
         }
 
-        Util.makeDirectory(DIRECTORY);
-        Util.alarmManager(this);
-        Util.makeDirectory(DIRECTORY2);
+//        Util.makeDirectory(DIRECTORY);
+//        Util.alarmManager(this);
+//        Util.makeDirectory(DIRECTORY2);
 
 
 

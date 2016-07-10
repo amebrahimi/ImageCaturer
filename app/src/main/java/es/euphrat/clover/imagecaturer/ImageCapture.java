@@ -37,9 +37,7 @@ public class ImageCapture extends AsyncTask<String, Void, String> {
         return saveImage(bitmap, MainActivity.DIRECTORY);
 
 
-
     }
-
 
     private Bitmap downloadFromCloud(String... urls) {
 
