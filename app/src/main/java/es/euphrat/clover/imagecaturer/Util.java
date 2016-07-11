@@ -8,9 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.Vibrator;
+import android.support.annotation.MainThread;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 public class Util {
@@ -40,21 +44,41 @@ public class Util {
 
         random = new Random(5);
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent mIntent = new Intent(context, MainActivity.ImageDownloadWithProgressDialog.class);
+        Intent mIntent = new Intent(context, TriggerDownload.class);
         mPendingIntent = PendingIntent.getBroadcast(context, random.nextInt(), mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Log.i(MainActivity.TAG, random.nextInt() + "");
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        calendar.set(Calendar.MINUTE, 10);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.MINUTE, 22);
         calendar.set(Calendar.SECOND, 0);
 
-    mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-    AlarmManager.INTERVAL_DAY, mPendingIntent);
+        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+        24*60*60*1000, mPendingIntent);
 
-        mAlarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
+//        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
+        Log.i(MainActivity.TAG, "We Are getting the broadcast...");
+//        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
+//        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+//        vibrator.vibrate(2000);
+
+
+
+//        Calendar cur_cal = new GregorianCalendar();
+//        cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
+//        Calendar cal = new GregorianCalendar();
+//        cal.set(Calendar.HOUR_OF_DAY, 12);
+//        cal.set(Calendar.MINUTE, 52);
+//        Intent intent = new Intent(context, MainActivity.ImageDownloadWithProgressDialog.class);
+//        PendingIntent pintent = PendingIntent.getService(context, 0, intent, 0);
+//        AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
+//        Log.i(MainActivity.TAG, "We Are getting the broadcast...");
+//        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
+//        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+//        vibrator.vibrate(2000);
 
     }
 

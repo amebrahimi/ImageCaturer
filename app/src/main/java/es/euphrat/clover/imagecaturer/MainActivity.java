@@ -1,6 +1,7 @@
 package es.euphrat.clover.imagecaturer;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 
@@ -36,37 +39,37 @@ public class MainActivity extends Activity {
     public static String TAG = MainActivity.class.getSimpleName();
     public static String DIRECTORY = Environment.getExternalStorageDirectory().toString() + "/Image Capturer";
     public static String DIRECTORY2 = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2";
-    private String[] perms = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE" };
+    private String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
     Button button;
     ProgressDialog progressdialog;
     public static final int Progress_Dialog_Progress = 0;
     URL url;
-    URLConnection urlconnection ;
+    URLConnection urlconnection;
     int FileSize;
     InputStream inputstream;
     OutputStream outputstream;
     byte dataArray[] = new byte[1024];
     long totalSize = 0;
     ImageView imageview;
-    String GetPath ;
+    String GetPath;
     String imageAddress;
     Calendar c = Calendar.getInstance();
     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
     String formattedDate = df.format(c.getTime());
     String fileName;
     Context context;
-
-
-
-
-
+    TimePicker myTimePicker;
+    Button buttonstartSetDialog;
+    TextView textAlarmPrompt;
+    TimePickerDialog timePickerDialog;
+    final static int RQS_1 = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        button = (Button)findViewById(R.id.button1);
-        imageview = (ImageView)findViewById(R.id.imageView1);
+        imageview = (ImageView) findViewById(R.id.imageView1);
         GetImageURL getImageadres = new GetImageURL();
         try {
             imageAddress = getImageadres.execute("http://apod.nasa.gov/apod/astropix.html").get();
@@ -95,19 +98,19 @@ public class MainActivity extends Activity {
 
 //            @Override
 //            public void onClick(View v) {
-                // TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
 //                imageAddress = "http://www.serone.reiran.com/photos/old/free/reiran.com1358375130.jpg";
-                new ImageDownloadWithProgressDialog().execute(imageAddress);
 
 //            }
 //        });
+        new ImageDownloadWithProgressDialog().execute(imageAddress);
 
         Log.d(TAG, DIRECTORY);
         fileName = "Image-" + formattedDate + ".jpg";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int permsRequest = 200;
-            requestPermissions(perms , permsRequest);
+            requestPermissions(perms, permsRequest);
         }
 //     TODO       // man inaro felan gheire faal kardam //
         Util.makeDirectory(DIRECTORY);
@@ -115,8 +118,8 @@ public class MainActivity extends Activity {
         Util.makeDirectory(DIRECTORY2);
 
 
-
     }
+
     public class ImageDownloadWithProgressDialog extends AsyncTask<String, String, String> {
 
         Context mContext;
@@ -151,7 +154,7 @@ public class MainActivity extends Activity {
 
                     totalSize += count;
 
-                    publishProgress(""+(int)((totalSize*100)/FileSize));
+                    publishProgress("" + (int) ((totalSize * 100) / FileSize));
 
                     outputstream.write(dataArray, 0, count);
                 }
@@ -160,10 +163,12 @@ public class MainActivity extends Activity {
                 outputstream.close();
                 inputstream.close();
 
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 //            return null;
             return fileName;
         }
+
         protected void onProgressUpdate(String... progress) {
 
             progressdialog.setProgress(Integer.parseInt(progress[0]));
@@ -180,14 +185,15 @@ public class MainActivity extends Activity {
 
             imageview.setImageDrawable(Drawable.createFromPath(GetPath));
 
-            Toast.makeText(MainActivity.this, "Image Downloaded Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Image Downloaded and Set to Wallpaper Successfully", Toast.LENGTH_LONG).show();
 
-            Util.setWall(getApplicationContext(), s);
+//            Util.setWall(getApplicationContext(), s);
 
 
-     }
+        }
 
-}
+    }
+
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -206,7 +212,12 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
+
+
 }
+
 
 
 
