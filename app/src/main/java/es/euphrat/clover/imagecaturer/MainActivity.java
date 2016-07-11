@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -64,7 +65,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = (Button)findViewById(R.id.button1);
+//        button = (Button)findViewById(R.id.button1);
         imageview = (ImageView)findViewById(R.id.imageView1);
         GetImageURL getImageadres = new GetImageURL();
         try {
@@ -143,7 +144,7 @@ public class MainActivity extends Activity {
 
                 inputstream = new BufferedInputStream(url.openStream());
                 outputstream = new FileOutputStream(Environment.getExternalStorageDirectory().
-                        toString() + "/Image Capturer2/" + fileName);
+                        toString() + "/Image Capturer/" + fileName);
 
 
                 while ((count = inputstream.read(dataArray)) != -1) {
@@ -175,7 +176,7 @@ public class MainActivity extends Activity {
 
             dismissDialog(Progress_Dialog_Progress);
 
-            GetPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2/" + fileName;
+            GetPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer/" + fileName;
 
             imageview.setImageDrawable(Drawable.createFromPath(GetPath));
 
@@ -183,7 +184,8 @@ public class MainActivity extends Activity {
 
             Util.setWall(getApplicationContext(), s);
 
-    }
+
+     }
 
 }
     @Override

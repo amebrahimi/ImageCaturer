@@ -47,8 +47,8 @@ public class Util {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 10);
         calendar.set(Calendar.SECOND, 0);
 
     mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -76,7 +76,7 @@ public class Util {
 
 
         try {
-            is = new FileInputStream(new File(root + "/Image Capturer2/" + fileName));
+            is = new FileInputStream(new File(root + "/Image Capturer/" + fileName));
 
             Log.d(MainActivity.TAG, fileName);
 
