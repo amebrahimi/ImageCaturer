@@ -2,24 +2,15 @@ package es.euphrat.clover.imagecaturer;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Vibrator;
-import android.support.annotation.MainThread;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -27,18 +18,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Random;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class Util {
-
-    public static int mHour;
-    public static int mMinute;
-
-
-
 
     public static void makeDirectory(String directory) {
 
@@ -50,29 +32,10 @@ public class Util {
     }
 
 
-    public static  Handler mHandler = new Handler(){
-//        @Override
-//        public void handleMessage(Message m){
-//            /** Creating a bundle object to pass currently set Time to the fragment */
-//            Bundle b = m.getData();
-//
-//            /** Getting the Hour of day from bundle */
-//            mHour = b.getInt("set_hour");
-//
-//            /** Getting the Minute of the hour from bundle */
-//            mMinute = b.getInt("set_minute");
 
-
-
-
-
-            /** Displaying a short time message containing time set by Time picker dialog fragment */
-//        }
-    };
 
 
     public static void alarmManager(Context context) {
-        SharedPreference sharedPreference = new SharedPreference();
         MainActivity mainActivity = new MainActivity();
         AlarmManager mAlarmManager;
         PendingIntent mPendingIntent;
@@ -83,40 +46,18 @@ public class Util {
         mPendingIntent = PendingIntent.getBroadcast(context, random.nextInt(), mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Log.i(MainActivity.TAG, random.nextInt() + "");
-        mHour = sharedPreference.getValue(context);
-        mMinute = sharedPreference.getValue(context);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, mHour);
-        calendar.set(Calendar.MINUTE, mMinute);
+        calendar.set(Calendar.HOUR_OF_DAY, mainActivity.getHour());
+        calendar.set(Calendar.MINUTE, mainActivity.getMinute());
         calendar.set(Calendar.SECOND, 0);
         mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
         24*60*60*1000, mPendingIntent);
-        Log.d ("HOUR", String.valueOf(mHour));
-        Log.d ("MINUTE", String.valueOf(mMinute));
+        Log.d ("HOUR", String.valueOf(mainActivity.getHour()));
+        Log.d ("MINUTE", String.valueOf(mainActivity.getMinute()));
 
 //        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
         Log.i(MainActivity.TAG, "We Are getting the broadcast...");
-//        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
-//        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-//        vibrator.vibrate(2000);
-
-
-
-//        Calendar cur_cal = new GregorianCalendar();
-//        cur_cal.setTimeInMillis(System.currentTimeMillis());//set the current time and date for this calendar
-//        Calendar cal = new GregorianCalendar();
-//        cal.set(Calendar.HOUR_OF_DAY, 12);
-//        cal.set(Calendar.MINUTE, 52);
-//        Intent intent = new Intent(context, MainActivity.ImageDownloadWithProgressDialog.class);
-//        PendingIntent pintent = PendingIntent.getService(context, 0, intent, 0);
-//        AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
-//        Log.i(MainActivity.TAG, "We Are getting the broadcast...");
-//        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
-//        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-//        vibrator.vibrate(2000);
-
     }
 
     public static void setWall(Context context, String fileName) {

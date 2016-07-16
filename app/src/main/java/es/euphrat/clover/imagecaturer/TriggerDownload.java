@@ -14,11 +14,10 @@ import java.util.concurrent.ExecutionException;
 
 public class TriggerDownload extends BroadcastReceiver {
     private String imageURL;
-    private String imageAddress;
-    Calendar c = Calendar.getInstance();
-    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-    private String formattedDate = df.format(c.getTime());
-    private MainActivity mainActivity;
+
+
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
 

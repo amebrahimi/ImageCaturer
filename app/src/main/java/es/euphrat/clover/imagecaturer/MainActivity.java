@@ -2,12 +2,13 @@ package es.euphrat.clover.imagecaturer;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,24 +40,57 @@ public class MainActivity extends FragmentActivity {
 
     ProgressDialog progressdialog;
     public static final int Progress_Dialog_Progress = 0;
-    URL url;
-    URLConnection urlconnection;
-    int FileSize;
-    InputStream inputstream;
-    OutputStream outputstream;
-    byte dataArray[] = new byte[1024];
-    long totalSize = 0;
-    ImageView imageview;
-    String GetPath;
-    String imageAddress;
-    Calendar c = Calendar.getInstance();
-    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-    String formattedDate = df.format(c.getTime());
-    String fileName;
-    Context context;
-    int mHour = 12;
-    int mMinute = 00;
-    /** This handles the message send from TimePickerDialogFragment on setting Time */
+    private URL url;
+    private URLConnection urlconnection;
+    private int FileSize;
+    private InputStream inputstream;
+    private OutputStream outputstream;
+    private byte dataArray[] = new byte[1024];
+    private long totalSize = 0;
+    private ImageView imageview;
+    private String GetPath;
+    private String imageAddress;
+    private Calendar c = Calendar.getInstance();
+    private SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+    private String formattedDate = df.format(c.getTime());
+    private String fileName;
+    private int mHour = 12;
+    private int mMinute = 00;
+
+    public int getMinute() {
+        return mMinute;
+    }
+
+    public void setMinute(int minute) {
+        mMinute = minute;
+    }
+
+    public int getHour() {
+        return mHour;
+    }
+
+    public void setHour(int hour) {
+        mHour = hour;
+    }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message m) {
+            /** Creating a bundle object to pass currently set Time to the fragment */
+            Bundle b = m.getData();
+
+            mHour = b.getInt("set_hour");
+            mMinute = b.getInt("set_minute");
+
+
+            setHour(mHour);
+            setMinute(mMinute);
+
+            Util.alarmManager(getApplicationContext());
+
+            /** Displaying a short time message containing time set by Time picker dialog fragment */
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +119,7 @@ public class MainActivity extends FragmentActivity {
         } else {
 
             Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
-            Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext() , "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
         }
 
         new ImageDownloadWithProgressDialog().execute(imageAddress);
@@ -100,7 +134,6 @@ public class MainActivity extends FragmentActivity {
         Util.makeDirectory(DIRECTORY);
         Util.alarmManager(this);
         Util.makeDirectory(DIRECTORY2);
-        final SharedPreference sharePreference = new SharedPreference();
         /** Click Event Handler for button */
         OnClickListener listener = new OnClickListener() {
             @Override
@@ -116,7 +149,7 @@ public class MainActivity extends FragmentActivity {
                 b.putInt("set_minute", mMinute);
 
                 /** Instantiating TimePickerDialogFragment */
-                TimePickerDialogFragment timePicker = new TimePickerDialogFragment(Util.mHandler);
+                TimePickerDialogFragment timePicker = new TimePickerDialogFragment(mHandler);
 
                 /** Setting the bundle object on timepicker fragment */
                 timePicker.setArguments(b);
@@ -132,13 +165,12 @@ public class MainActivity extends FragmentActivity {
 
                 /** Opening the TimePicker fragment */
                 ft.commit();
-                sharePreference.save(getApplicationContext(), mHour);
-                sharePreference.save(getApplicationContext(), mMinute);
+
             }
         };
 
         /** Getting an instance of Set button */
-        Button btnSet = (Button)findViewById(R.id.btnSet);
+        Button btnSet = (Button) findViewById(R.id.btnSet);
 
         /** Setting click event listener for the button */
         btnSet.setOnClickListener(listener);
@@ -153,7 +185,6 @@ public class MainActivity extends FragmentActivity {
 
     public class ImageDownloadWithProgressDialog extends AsyncTask<String, String, String> {
 
-        Context mContext;
 
         @Override
         protected void onPreExecute() {
@@ -244,8 +275,8 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-
 }
+
 
 
 
