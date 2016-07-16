@@ -27,8 +27,8 @@ public class TriggerDownload extends BroadcastReceiver {
 
         Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
 
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(2000);
+//        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+//        vibrator.vibrate(2000);
 
 
         try {
