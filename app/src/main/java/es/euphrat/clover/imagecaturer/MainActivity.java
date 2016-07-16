@@ -38,17 +38,11 @@ public class MainActivity extends FragmentActivity {
     private String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
 
 
-    ProgressDialog progressdialog;
+    private ProgressDialog progressdialog;
     public static final int Progress_Dialog_Progress = 0;
-    private URL url;
-    private URLConnection urlconnection;
-    private int FileSize;
-    private InputStream inputstream;
-    private OutputStream outputstream;
     private byte dataArray[] = new byte[1024];
     private long totalSize = 0;
     private ImageView imageview;
-    private String GetPath;
     private String imageAddress;
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -201,14 +195,14 @@ public class MainActivity extends FragmentActivity {
 
             try {
 
-                url = new URL(aurl[0]);
-                urlconnection = url.openConnection();
+                URL url = new URL(aurl[0]);
+                URLConnection urlconnection = url.openConnection();
                 urlconnection.connect();
 
-                FileSize = urlconnection.getContentLength();
+                int fileSize = urlconnection.getContentLength();
 
-                inputstream = new BufferedInputStream(url.openStream());
-                outputstream = new FileOutputStream(Environment.getExternalStorageDirectory().
+                InputStream inputstream = new BufferedInputStream(url.openStream());
+                OutputStream outputstream = new FileOutputStream(Environment.getExternalStorageDirectory().
                         toString() + "/Image Capturer/" + fileName);
 
 
@@ -216,7 +210,7 @@ public class MainActivity extends FragmentActivity {
 
                     totalSize += count;
 
-                    publishProgress("" + (int) ((totalSize * 100) / FileSize));
+                    publishProgress("" + (int) ((totalSize * 100) / fileSize));
 
                     outputstream.write(dataArray, 0, count);
                 }
@@ -243,9 +237,9 @@ public class MainActivity extends FragmentActivity {
 
             dismissDialog(Progress_Dialog_Progress);
 
-            GetPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer/" + fileName;
+            String getPath = Environment.getExternalStorageDirectory().toString() + "/Image Capturer/" + fileName;
 
-            imageview.setImageDrawable(Drawable.createFromPath(GetPath));
+            imageview.setImageDrawable(Drawable.createFromPath(getPath));
 
             Toast.makeText(MainActivity.this, "Image Downloaded and Set to Wallpaper Successfully", Toast.LENGTH_LONG).show();
 
