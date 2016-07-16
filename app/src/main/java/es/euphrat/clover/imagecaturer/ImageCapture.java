@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Random;
 
 
 public class ImageCapture extends AsyncTask<String, Void, String> {

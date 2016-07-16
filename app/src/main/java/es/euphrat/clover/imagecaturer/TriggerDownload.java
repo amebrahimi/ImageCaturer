@@ -4,12 +4,9 @@ package es.euphrat.clover.imagecaturer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 public class TriggerDownload extends BroadcastReceiver {
