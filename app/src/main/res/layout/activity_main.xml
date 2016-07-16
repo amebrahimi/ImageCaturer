@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/textView2"
-        android:layout_below="@+id/startSetDialog" />
+        android:layout_below="@+id/btnSet" />
 
     <TextView
         android:text="@string/under_construction"

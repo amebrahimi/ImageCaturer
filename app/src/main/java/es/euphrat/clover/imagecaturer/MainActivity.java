@@ -2,8 +2,6 @@ package es.euphrat.clover.imagecaturer;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,12 +28,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends FragmentActivity {
-    private static final String PREFS_FILE = "es.euphrat.clover.imagecaturer.preferences";
-    private static final String KEY_HOUR = "key_hour";
-    private static final String KEY_MINUTE = "key_minute";
     public static String TAG = MainActivity.class.getSimpleName();
     public static String DIRECTORY = Environment.getExternalStorageDirectory().toString() + "/Image Capturer";
     public static String DIRECTORY2 = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2";
@@ -52,46 +48,44 @@ public class MainActivity extends FragmentActivity {
     private SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
     private String formattedDate = df.format(c.getTime());
     private String fileName;
-    private int mHour;
-    private int mMinute;
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mEditor;
+    private int mHour = 12;
+    private int mMinute = 00;
+
 
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message m) {
-
+            /** Creating a bundle object to pass currently set Time to the fragment */
             Bundle b = m.getData();
 
             mHour = b.getInt("set_hour");
             mMinute = b.getInt("set_minute");
 
-            Util.alarmManager(getApplicationContext(), b.getInt("set_hour"), b.getInt("set_minute"));
+
+            setHour(b.getInt("set_hour"));
+            setMinute(b.getInt("set_minute"));
+
+            Toast.makeText(getApplicationContext(), "the time is " + b.getInt("set_hour") + "And " + b.getInt("set_minute") + "minutes" , Toast.LENGTH_SHORT).show();
+
+            Util.alarmManager(getApplicationContext());
 
             /** Displaying a short time message containing time set by Time picker dialog fragment */
         }
     };
 
     @Override
-    protected void onPause() {
-        mEditor.putInt(KEY_HOUR, mHour);
-        mEditor.putInt(KEY_MINUTE, mMinute);
-        mEditor.apply();
-        super.onPause();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSharedPreferences = getSharedPreferences(PREFS_FILE , Context.MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-
         imageview = (ImageView) findViewById(R.id.imageView1);
         GetImageURL getImageAddress = new GetImageURL();
         try {
             imageAddress = getImageAddress.execute("http://apod.nasa.gov/apod/astropix.html").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.e(MainActivity.TAG, "we got an error in MainActivity: ", e);
         } catch (Exception e) {
             Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
         }
@@ -121,7 +115,7 @@ public class MainActivity extends FragmentActivity {
 
         /** man inaro felan gheire faal kardam */
         Util.makeDirectory(DIRECTORY);
-        Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR , 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
+        Util.alarmManager(this);
         Util.makeDirectory(DIRECTORY2);
 
         OnClickListener listener = new OnClickListener() {
@@ -250,6 +244,21 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    public int getMinute() {
+        return mMinute;
+    }
+
+    public void setMinute(int minute) {
+        mMinute = minute;
+    }
+
+    public int getHour() {
+        return mHour;
+    }
+
+    public void setHour(int hour) {
+        mHour = hour;
+    }
 
 }
 
