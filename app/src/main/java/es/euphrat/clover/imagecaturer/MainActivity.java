@@ -51,21 +51,7 @@ public class MainActivity extends FragmentActivity {
     private int mHour = 12;
     private int mMinute = 00;
 
-    public int getMinute() {
-        return mMinute;
-    }
 
-    public void setMinute(int minute) {
-        mMinute = minute;
-    }
-
-    public int getHour() {
-        return mHour;
-    }
-
-    public void setHour(int hour) {
-        mHour = hour;
-    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -77,8 +63,8 @@ public class MainActivity extends FragmentActivity {
             mMinute = b.getInt("set_minute");
 
 
-            setHour(mHour);
-            setMinute(mMinute);
+            setHour(b.getInt("set_hour"));
+            setMinute(b.getInt("set_minute"));
 
             Util.alarmManager(getApplicationContext());
 
@@ -91,9 +77,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageview = (ImageView) findViewById(R.id.imageView1);
-        GetImageURL getImageadres = new GetImageURL();
+        GetImageURL getImageAddress = new GetImageURL();
         try {
-            imageAddress = getImageadres.execute("http://apod.nasa.gov/apod/astropix.html").get();
+            imageAddress = getImageAddress.execute("http://apod.nasa.gov/apod/astropix.html").get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -113,7 +99,7 @@ public class MainActivity extends FragmentActivity {
         } else {
 
             Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
-            Toast.makeText(getApplicationContext() , "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
         }
 
         new ImageDownloadWithProgressDialog().execute(imageAddress);
@@ -124,49 +110,39 @@ public class MainActivity extends FragmentActivity {
             int permsRequest = 200;
             requestPermissions(perms, permsRequest);
         }
-//     TODO       // man inaro felan gheire faal kardam //
+
+        /** man inaro felan gheire faal kardam */
         Util.makeDirectory(DIRECTORY);
         Util.alarmManager(this);
         Util.makeDirectory(DIRECTORY2);
-        /** Click Event Handler for button */
+
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                /** Creating a bundle object to pass currently set time to the fragment */
                 Bundle b = new Bundle();
 
-                /** Adding currently set hour to bundle object */
                 b.putInt("set_hour", mHour);
 
-                /** Adding currently set minute to bundle object */
                 b.putInt("set_minute", mMinute);
 
-                /** Instantiating TimePickerDialogFragment */
                 TimePickerDialogFragment timePicker = new TimePickerDialogFragment(mHandler);
 
-                /** Setting the bundle object on timepicker fragment */
                 timePicker.setArguments(b);
 
-                /** Getting fragment manger for this activity */
                 FragmentManager fm = getSupportFragmentManager();
 
-                /** Starting a fragment transaction */
                 FragmentTransaction ft = fm.beginTransaction();
 
-                /** Adding the fragment object to the fragment transaction */
                 ft.add(timePicker, "time_picker");
 
-                /** Opening the TimePicker fragment */
                 ft.commit();
 
             }
         };
 
-        /** Getting an instance of Set button */
         Button btnSet = (Button) findViewById(R.id.btnSet);
 
-        /** Setting click event listener for the button */
         btnSet.setOnClickListener(listener);
 
 
@@ -221,7 +197,6 @@ public class MainActivity extends FragmentActivity {
 
             } catch (Exception e) {
             }
-//            return null;
             return fileName;
         }
 
@@ -243,7 +218,6 @@ public class MainActivity extends FragmentActivity {
 
             Toast.makeText(MainActivity.this, "Image Downloaded and Set to Wallpaper Successfully", Toast.LENGTH_LONG).show();
 
-//            Util.setWall(getApplicationContext(), s);
 
 
         }
@@ -268,6 +242,21 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    public int getMinute() {
+        return mMinute;
+    }
+
+    public void setMinute(int minute) {
+        mMinute = minute;
+    }
+
+    public int getHour() {
+        return mHour;
+    }
+
+    public void setHour(int hour) {
+        mHour = hour;
+    }
 
 }
 
