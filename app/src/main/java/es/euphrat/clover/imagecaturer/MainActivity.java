@@ -36,6 +36,7 @@ public class MainActivity extends FragmentActivity {
     private static final String PREFS_FILE = "es.euphrat.clover.imagecaturer.preferences";
     private static final String KEY_HOUR = "key_hour";
     private static final String KEY_MINUTE = "key_minute";
+
     public static String TAG = MainActivity.class.getSimpleName();
     public static String DIRECTORY = Environment.getExternalStorageDirectory().toString() + "/Image Capturer";
     public static String DIRECTORY2 = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2";
@@ -67,19 +68,16 @@ public class MainActivity extends FragmentActivity {
             mHour = b.getInt("set_hour");
             mMinute = b.getInt("set_minute");
 
-            Util.alarmManager(getApplicationContext(), b.getInt("set_hour"), b.getInt("set_minute"));
+            mEditor.clear();
+            mEditor.putInt(KEY_HOUR, mHour);
+            mEditor.putInt(KEY_MINUTE, mMinute);
+            mEditor.commit();
 
-            /** Displaying a short time message containing time set by Time picker dialog fragment */
+            Util.alarmManager(getApplicationContext(), mSharedPreferences.getInt(KEY_HOUR, 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
+
         }
     };
 
-    @Override
-    protected void onPause() {
-        mEditor.putInt(KEY_HOUR, mHour);
-        mEditor.putInt(KEY_MINUTE, mMinute);
-        mEditor.apply();
-        super.onPause();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

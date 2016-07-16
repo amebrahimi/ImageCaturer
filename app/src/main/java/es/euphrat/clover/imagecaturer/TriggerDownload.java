@@ -44,22 +44,27 @@ public class TriggerDownload extends BroadcastReceiver {
         }
 
 
-        if (!imageURL.isEmpty() && imageURL != null) {
-
-            ImageCapture imageCapture = new ImageCapture(context);
-
-            Log.d(MainActivity.TAG, imageURL);
-
-            imageCapture.execute("http://apod.nasa.gov/apod/" + imageURL);
+        try {
 
 
-        } else {
+            if (!imageURL.isEmpty() && imageURL != null) {
 
-            Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
-            Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+                ImageCapture imageCapture = new ImageCapture(context);
+
+                Log.d(MainActivity.TAG, imageURL);
+
+                imageCapture.execute("http://apod.nasa.gov/apod/" + imageURL);
+
+
+            } else {
+
+                Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
+                Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
         }
-
-
 
     }
 }
