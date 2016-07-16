@@ -35,8 +35,7 @@ public class Util {
 
 
 
-    public static void alarmManager(Context context) {
-        MainActivity mainActivity = new MainActivity();
+    public static void alarmManager(Context context , int hour , int minute) {
         AlarmManager mAlarmManager;
         PendingIntent mPendingIntent;
         Random random;
@@ -48,13 +47,13 @@ public class Util {
         Log.i(MainActivity.TAG, random.nextInt() + "");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, mainActivity.getHour());
-        calendar.set(Calendar.MINUTE, mainActivity.getMinute());
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-        24*60*60*1000, mPendingIntent);
-        Log.d ("HOUR", String.valueOf(mainActivity.getHour()));
-        Log.d ("MINUTE", String.valueOf(mainActivity.getMinute()));
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                mPendingIntent);
+        Log.d ("HOUR", String.valueOf(hour));
+        Log.d ("MINUTE", String.valueOf(minute));
 
 //        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
         Log.i(MainActivity.TAG, "We Are getting the broadcast...");
