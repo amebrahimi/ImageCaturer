@@ -1,15 +1,25 @@
 package es.euphrat.clover.imagecaturer;
 
-import android.app.Activity;
-import android.app.TimePickerDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Vibrator;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,28 +29,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
-
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     public static String TAG = MainActivity.class.getSimpleName();
     public static String DIRECTORY = Environment.getExternalStorageDirectory().toString() + "/Image Capturer";
     public static String DIRECTORY2 = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2";
     private String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-    Button button;
+
+
     ProgressDialog progressdialog;
     public static final int Progress_Dialog_Progress = 0;
     URL url;
@@ -58,17 +54,14 @@ public class MainActivity extends Activity {
     String formattedDate = df.format(c.getTime());
     String fileName;
     Context context;
-    TimePicker myTimePicker;
-    Button buttonstartSetDialog;
-    TextView textAlarmPrompt;
-    TimePickerDialog timePickerDialog;
-    final static int RQS_1 = 1;
+    int mHour = 12;
+    int mMinute = 00;
+    /** This handles the message send from TimePickerDialogFragment on setting Time */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        button = (Button)findViewById(R.id.button1);
         imageview = (ImageView) findViewById(R.id.imageView1);
         GetImageURL getImageadres = new GetImageURL();
         try {
@@ -94,16 +87,7 @@ public class MainActivity extends Activity {
             Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
             Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
         }
-//        button.setOnClickListener(new View.OnClickListener() {
 
-//            @Override
-//            public void onClick(View v) {
-        // TODO Auto-generated method stub
-
-//                imageAddress = "http://www.serone.reiran.com/photos/old/free/reiran.com1358375130.jpg";
-
-//            }
-//        });
         new ImageDownloadWithProgressDialog().execute(imageAddress);
 
         Log.d(TAG, DIRECTORY);
@@ -116,8 +100,55 @@ public class MainActivity extends Activity {
         Util.makeDirectory(DIRECTORY);
         Util.alarmManager(this);
         Util.makeDirectory(DIRECTORY2);
+        final SharedPreference sharePreference = new SharedPreference();
+        /** Click Event Handler for button */
+        OnClickListener listener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /** Creating a bundle object to pass currently set time to the fragment */
+                Bundle b = new Bundle();
+
+                /** Adding currently set hour to bundle object */
+                b.putInt("set_hour", mHour);
+
+                /** Adding currently set minute to bundle object */
+                b.putInt("set_minute", mMinute);
+
+                /** Instantiating TimePickerDialogFragment */
+                TimePickerDialogFragment timePicker = new TimePickerDialogFragment(Util.mHandler);
+
+                /** Setting the bundle object on timepicker fragment */
+                timePicker.setArguments(b);
+
+                /** Getting fragment manger for this activity */
+                FragmentManager fm = getSupportFragmentManager();
+
+                /** Starting a fragment transaction */
+                FragmentTransaction ft = fm.beginTransaction();
+
+                /** Adding the fragment object to the fragment transaction */
+                ft.add(timePicker, "time_picker");
+
+                /** Opening the TimePicker fragment */
+                ft.commit();
+                sharePreference.save(getApplicationContext(), mHour);
+                sharePreference.save(getApplicationContext(), mMinute);
+            }
+        };
+
+        /** Getting an instance of Set button */
+        Button btnSet = (Button)findViewById(R.id.btnSet);
+
+        /** Setting click event listener for the button */
+        btnSet.setOnClickListener(listener);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     public class ImageDownloadWithProgressDialog extends AsyncTask<String, String, String> {
@@ -211,8 +242,6 @@ public class MainActivity extends Activity {
                 return null;
         }
     }
-
-
 
 
 
