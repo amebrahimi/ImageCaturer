@@ -66,6 +66,8 @@ public class MainActivity extends FragmentActivity {
             setHour(b.getInt("set_hour"));
             setMinute(b.getInt("set_minute"));
 
+            Toast.makeText(getApplicationContext(), "the time is " + b.getInt("set_hour") + "And " + b.getInt("set_minute") + "minutes" , Toast.LENGTH_SHORT).show();
+
             Util.alarmManager(getApplicationContext());
 
             /** Displaying a short time message containing time set by Time picker dialog fragment */
