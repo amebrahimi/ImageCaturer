@@ -62,7 +62,7 @@ public class MainActivity extends FragmentActivity {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message m) {
-
+            //new
             Bundle b = m.getData();
 
             mHour = b.getInt("set_hour");
