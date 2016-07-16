@@ -3,6 +3,7 @@ package es.euphrat.clover.imagecaturer;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -32,7 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class MainActivity extends FragmentActivity {
+public class
+MainActivity extends FragmentActivity {
     private static final String PREFS_FILE = "es.euphrat.clover.imagecaturer.preferences";
     private static final String KEY_HOUR = "key_hour";
     private static final String KEY_MINUTE = "key_minute";
@@ -239,6 +241,12 @@ public class MainActivity extends FragmentActivity {
                 progressdialog.setMessage("Downloading Image From Server...");
                 progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressdialog.setCancelable(false);
+                progressdialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 progressdialog.show();
                 return progressdialog;
 
