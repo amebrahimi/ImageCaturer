@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -41,7 +42,6 @@ MainActivity extends FragmentActivity {
 
     public static String TAG = MainActivity.class.getSimpleName();
     public static String DIRECTORY = Environment.getExternalStorageDirectory().toString() + "/Image Capturer";
-    public static String DIRECTORY2 = Environment.getExternalStorageDirectory().toString() + "/Image Capturer2";
     private String[] perms = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
 
 
@@ -59,6 +59,7 @@ MainActivity extends FragmentActivity {
     private int mMinute;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
+    private TextView time;
 
 
     private Handler mHandler = new Handler() {
@@ -76,10 +77,18 @@ MainActivity extends FragmentActivity {
             mEditor.commit();
 
             Util.alarmManager(getApplicationContext(), mSharedPreferences.getInt(KEY_HOUR, 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
-
+            time.setText(getString(R.string.wallpaperChanging1) + " " + String.format("%02d",mSharedPreferences.getInt(KEY_MINUTE, 0)) +" : "
+                    +String.format("%02d",mSharedPreferences.getInt(KEY_HOUR, 0))+" "+(getString(R.string.wallpaperChanging2)));
         }
     };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        time.setText(getString(R.string.wallpaperChanging1) + " " + String.format("%02d",mSharedPreferences.getInt(KEY_MINUTE, 0)) +" : "
+                +String.format("%02d",mSharedPreferences.getInt(KEY_HOUR, 0))+" "+(getString(R.string.wallpaperChanging2)));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +97,7 @@ MainActivity extends FragmentActivity {
         mSharedPreferences = getSharedPreferences(PREFS_FILE , Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
 
+        time = (TextView) findViewById(R.id.textView2);
         imageview = (ImageView) findViewById(R.id.imageView1);
         GetImageURL getImageAddress = new GetImageURL();
         try {
@@ -122,7 +132,7 @@ MainActivity extends FragmentActivity {
         /** man inaro felan gheire faal kardam */
         Util.makeDirectory(DIRECTORY);
         Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR , 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
-        Util.makeDirectory(DIRECTORY2);
+
 
         OnClickListener listener = new OnClickListener() {
             @Override
@@ -224,9 +234,6 @@ MainActivity extends FragmentActivity {
 
             imageview.setImageDrawable(Drawable.createFromPath(getPath));
 
-            Toast.makeText(MainActivity.this, "Image Downloaded and Set to Wallpaper Successfully", Toast.LENGTH_LONG).show();
-
-
 
         }
 
@@ -258,9 +265,3 @@ MainActivity extends FragmentActivity {
 
 
 }
-
-
-
-
-
-

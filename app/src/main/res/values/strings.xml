@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Image Capture</string>
     <string name="under_construction">THIS APP IS UNDER CONSTRUCTION</string>
-    <string name="wallpaperChanging">YOUR WALLPAPER WILL CHANGE AUTOMATICALLY AT 12PM</string>
+    <string name="wallpaperChanging1">در ساعت </string>
+    <string name="wallpaperChanging2">تصویر پس زمینه موبایل شما به تصویر نجومی روز ناسا تغییر خواهد کرد</string>
+    <string name="buttonText">تعیین زمان</string>
 
 </resources>

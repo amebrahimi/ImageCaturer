@@ -55,6 +55,7 @@ public class Util {
         Log.d ("HOUR", String.valueOf(hour));
         Log.d ("MINUTE", String.valueOf(minute));
 
+
 //        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
         Log.i(MainActivity.TAG, "We Are getting the broadcast...");
     }
