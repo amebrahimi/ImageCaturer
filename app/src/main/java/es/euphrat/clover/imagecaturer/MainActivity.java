@@ -2,6 +2,7 @@ package es.euphrat.clover.imagecaturer;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -23,7 +24,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -85,7 +85,6 @@ MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         time.setText(getString(R.string.wallpaperChanging1) + " " + String.format("%02d",mSharedPreferences.getInt(KEY_MINUTE, 0)) +" : "
                 +String.format("%02d",mSharedPreferences.getInt(KEY_HOUR, 0))+" "+(getString(R.string.wallpaperChanging2)));
     }
@@ -96,10 +95,10 @@ MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         mSharedPreferences = getSharedPreferences(PREFS_FILE , Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
-
         time = (TextView) findViewById(R.id.textView2);
         imageview = (ImageView) findViewById(R.id.imageView1);
         GetImageURL getImageAddress = new GetImageURL();
+
         try {
             imageAddress = getImageAddress.execute("http://apod.nasa.gov/apod/astropix.html").get();
         } catch (Exception e) {
@@ -131,7 +130,7 @@ MainActivity extends FragmentActivity {
 
         /** man inaro felan gheire faal kardam */
         Util.makeDirectory(DIRECTORY);
-        Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR , 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
+//        Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR , 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
 
 
         OnClickListener listener = new OnClickListener() {

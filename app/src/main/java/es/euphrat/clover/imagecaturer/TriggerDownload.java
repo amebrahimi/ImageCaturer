@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TriggerDownload extends BroadcastReceiver {
     private String imageURL;
+    private  String imageAddress;
 
 
 
@@ -22,7 +23,7 @@ public class TriggerDownload extends BroadcastReceiver {
 
         Log.i(MainActivity.TAG, "We Are getting the broadcast...");
 
-        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "we are FINALLY here !!!!!", Toast.LENGTH_LONG).show();
 
 //        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 //        vibrator.vibrate(2000);
@@ -63,5 +64,8 @@ public class TriggerDownload extends BroadcastReceiver {
             Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
         }
 
+
     }
+
+
 }
