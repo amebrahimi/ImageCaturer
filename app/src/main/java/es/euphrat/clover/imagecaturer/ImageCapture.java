@@ -94,5 +94,7 @@ public class ImageCapture extends AsyncTask<String, Void, String> {
         super.onPostExecute(s);
 
         Util.setWall(mContext, s);
+        MainActivity.imageDraw(s);
+
     }
 }

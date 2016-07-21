@@ -56,7 +56,7 @@ public class Util {
         Log.d ("MINUTE", String.valueOf(minute));
 
 
-//        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000 * 4, mPendingIntent);
         Log.i(MainActivity.TAG, "We Are getting the broadcast...");
     }
 
@@ -78,7 +78,7 @@ public class Util {
 
 
         try {
-            is = new FileInputStream(new File(root + "/Image Capturer/" + fileName));
+            is = new FileInputStream(new File(root + "/NASA Photo of the Day/" + fileName));
 
             Log.d(MainActivity.TAG, fileName);
 

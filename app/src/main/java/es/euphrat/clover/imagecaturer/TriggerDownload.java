@@ -58,10 +58,12 @@ public class TriggerDownload extends BroadcastReceiver {
 
                 Log.d(MainActivity.TAG, "something went wrong :(, ImageURL is empty");
                 Toast.makeText(context, "Sorry We Aint got an image today", Toast.LENGTH_LONG).show();
+                MainActivity.noImageToday();
             }
 
         } catch (Exception e) {
             Log.e(MainActivity.TAG, "we got error in MainActivity: ", e);
+            MainActivity.noNetworkImage();
         }
 
 

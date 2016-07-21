@@ -13,6 +13,10 @@ public class TimePickerDialogFragment extends DialogFragment {
     int mHour;
     int mMinute;
 
+    public TimePickerDialogFragment(){
+
+    }
+
     public TimePickerDialogFragment(Handler h){
         /** Getting the reference to the message handler instantiated in MainActivity class */
         mHandler = h;
