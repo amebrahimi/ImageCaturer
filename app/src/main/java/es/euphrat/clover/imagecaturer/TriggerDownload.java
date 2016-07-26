@@ -29,6 +29,7 @@ public class TriggerDownload extends BroadcastReceiver {
 //        vibrator.vibrate(2000);
 
 
+
         try {
 
             imageURL = getImageURL.execute("http://apod.nasa.gov/apod/astropix.html").get();
