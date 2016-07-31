@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -115,11 +116,15 @@ MainActivity extends FragmentActivity {
             int permsRequest = 200;
             requestPermissions(perms, permsRequest);
         }
-
+        File file = new File(Environment.getExternalStorageDirectory().toString() + "/NASA Photo of the Day/" + fileName);
         /** man inaro felan gheire faal kardam */
         Util.makeDirectory(DIRECTORY);
-        Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR, 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
 
+        if(!file.exists()) {
+            Util.alarmManager(this, mSharedPreferences.getInt(KEY_HOUR, 0), mSharedPreferences.getInt(KEY_MINUTE, 0));
+        }else{
+            imageview.setImageDrawable(Drawable.createFromPath(String.valueOf(file)));
+        }
 
         OnClickListener listener = new OnClickListener() {
             @Override
